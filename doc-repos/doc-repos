@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+# Usage: first 'doc-repos --clone'
+# then use 'doc-repos "searchterm"' to search
+
+# Add these aliases 
+# alias view-doc-file=". view-doc-file"
+# alias view-doc-dir=". view-doc-dir"
+
+# Usage
+# view-doc-file "filename"
+# view-doc-dir "filename or dir"
+# if filename it will open the directory the file is in
+
+
+
+function clone {
+mkdir -p $DIR
+cd $DIR
+
+# Gets the list of git repos from my site
+URLS=$(curl -s https://linux.artturin.com/nixos/files/documentation-gits.txt)
+echo "$URLS"
+echo -n "Clone urls? [y/n]: "
+read answer
+if [[ $answer != "y" ]]; then
+    exit
+fi
+
+echo "$URLS" | while read line; do
+    URL_NOPRO=${line:8}
+    URL_REL=${URL_NOPRO#*/}
+    DIRNAME="${URL_REL%%\?*}"
+    CLONEDIRNAME=$(echo $DIRNAME | sed 's#/#-#g; s/\./-/g ')
+    git clone --depth 1 $line $CLONEDIRNAME
+done
+
+# Remove dead symlinks
+find $DIR -xtype l -delete
+
+# Remove unnecessary and spammy files
+ rm -f "vyorkin-nixos-config/cfgs/development/nodejs/packages/node-packages.nix"
+}
+
+function search {
+    cd $DIR
+    rg --no-require-git --heading --line-number -i -A 5 -B 3 "$@" | bat -n -l nix --theme "Solarized (dark)" --style "snip"
+}
+
+# Updates repos
+function update {
+    gitup $DIR
+}
+
+DIR="$HOME/code/documentation-dotfiles"
+
+if [ -n "$1" ]; then
+    case "$1" in
+        -h|--help)
+            echo "Usage: --clone, --update or just 'searchterm'"
+        ;;
+        --clone)
+            clone
+            ;;
+        --update)
+            update
+            ;;
+        *)
+            search "$@"
+            ;;
+    esac
+fi
+# vim:fileencoding=utf-8:ft=sh
