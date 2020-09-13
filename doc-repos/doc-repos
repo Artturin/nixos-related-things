@@ -3,16 +3,6 @@
 # Usage: first 'doc-repos --clone'
 # then use 'doc-repos "searchterm"' to search
 
-# Add these aliases 
-# alias view-doc-file=". view-doc-file"
-# alias view-doc-dir=". view-doc-dir"
-
-# Usage
-# view-doc-file "filename"
-# view-doc-dir "filename or dir"
-# if filename it will open the directory the file is in
-
-
 
 function clone {
 mkdir -p $DIR

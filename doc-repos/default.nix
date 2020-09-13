@@ -1,4 +1,4 @@
-{ stdenv, writeScriptBin, makeWrapper, lib, bash, git, ripgrep, findutils, curl, less, bat, git-repo-updater, coreutils }:
+{ stdenv, writeScriptBin, makeWrapper, lib, bash, git, ripgrep, findutils, curl, less, bat, git-repo-updater, coreutils, ranger }:
 
 let
   view-doc-file = (writeScriptBin "view-doc-file" ''
@@ -9,9 +9,9 @@ let
   view-doc-dir = (writeScriptBin "view-doc-dir" ''
     #!/usr/bin/env bash
     if [ -f "$HOME/code/documentation-dotfiles/$@" ]; then
-      cd "$HOME/code/documentation-dotfiles/$(${coreutils}/bin/dirname $@)"
+      ${ranger}/bin/ranger "$HOME/code/documentation-dotfiles/$(${coreutils}/bin/dirname $@)"
     else
-      cd "$HOME/code/documentation-dotfiles/$@"
+      ${ranger}/bin/ranger "$HOME/code/documentation-dotfiles/$@"
     fi
   '');
 
