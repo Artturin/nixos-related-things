@@ -16,5 +16,6 @@ change revAr to the newest commit
       arOverlay
     ];
 ```
+and add `doc-repos` to your packages
 
 
