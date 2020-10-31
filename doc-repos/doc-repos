@@ -4,6 +4,11 @@
 # then use 'doc-repos "searchterm"' to search
 
 
+# To view a file
+# view-doc-file "the-path-to-file-in-rg"
+# To view a dir
+# view-doc-file "the-path-to-file-in-rg"
+
 function clone {
 mkdir -p $DIR
 cd $DIR
