@@ -2,7 +2,9 @@
 scripts for nixos and nix
 
 doc-repos is for searching dotfile repositories
+
 view-doc-file command which is installed with doc-repos is for viewing the path in your text editor
+
 view-doc-dir command which is installed with doc-repos is for viewing the path in ranger
 
 To use add this to your config
