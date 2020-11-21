@@ -23,4 +23,6 @@ nixpkgs.overlays =
 ```
 and add `doc-repos` to your packages
 
+then run `doc-repos --clone` to clone the repos to `~/code/documentation-dotfiles`
+
 
