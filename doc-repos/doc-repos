@@ -9,7 +9,19 @@
 # To view a dir
 # view-doc-file "the-path-to-file-in-rg"
 
+
+# default directory
+DIR="$HOME/code/documentation-dotfiles"
+# file to read the new directory from
+FILE="$HOME/.doc-repos"
+
+if [[ -f $FILE ]]; then
+	read -r DIRECTORY<$FILE
+	DIR=$(eval echo $DIRECTORY)
+fi
+
 function clone {
+
 mkdir -p $DIR
 cd $DIR
 
@@ -49,12 +61,10 @@ function update {
     gitup $DIR
 }
 
-DIR="$HOME/code/documentation-dotfiles"
-
 if [ -n "$1" ]; then
     case "$1" in
         -h|--help)
-            echo "Usage: --clone, --update or just 'searchterm'"
+            echo -e "Usage: --clone, --update or just 'searchterm'\n\nThe default clone directory is ~/code/documentation-dotfiles\nIf you want to use a different directory, place the location in '~/.doc-repos'"
         ;;
         --clone)
             clone
