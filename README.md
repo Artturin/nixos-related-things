@@ -1,4 +1,10 @@
 # nixos-related-things
+
+made a hound instance for searching the same repos
+
+https://search.artturin.com
+
+
 scripts for nixos and nix
 
 doc-repos is for searching dotfile repositories
