@@ -35,7 +35,7 @@ stdenv.mkDerivation rec {
       --prefix PATH : "${lib.makeBinPath runtimeDeps}"
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     homepage = "https://github.com/Artturin/nixos-related-things";
     description = "a script for searching dotfile repos";
     platforms = platforms.linux ++ platforms.darwin;
