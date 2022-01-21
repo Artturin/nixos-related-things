@@ -18,8 +18,10 @@ def get_gh_notif_dict() -> dict[str, str]:
     for notif in notifications:
         issue = notif.get_issue()
         title = issue.title
+        repo = issue.repository.full_name
         html_url = issue.html_url
-        notif_dict[title] = html_url
+        entry = f"{repo} | {title}"
+        notif_dict[entry] = html_url
 
     return notif_dict
 
@@ -34,7 +36,7 @@ def get_gh_notif_url(notif_dict: dict[str, str]) -> str:
 def show_menu_get_answer(choices: str) -> list[str]:
     """get answer"""
 
-    menucommand: list[str] = ["wofi", "--show", "dmenu", "-W", "400", "-L", "20"]
+    menucommand: list[str] = ["wofi", "--show", "dmenu", "-W", "600", "-L", "20"]
 
     try:
         answer: list[str] = (
