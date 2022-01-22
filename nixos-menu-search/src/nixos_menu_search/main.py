@@ -30,13 +30,17 @@ def get_gh_notif_url(notif_dict: dict[str, str]) -> str:
     """get notification html url"""
     choices: str = "\n".join(tuple(notif_dict))
     choice: str = " ".join(show_menu_get_answer(choices))
-    return notif_dict[choice]
+    return notif_dict[choice] if choice in notif_dict else ""
 
 
 def show_menu_get_answer(choices: str) -> list[str]:
     """get answer"""
 
-    menucommand: list[str] = ["wofi", "--show", "dmenu", "-W", "600", "-L", "20"]
+    menucommand: list[str] = []
+    if command_var := os.getenv("NIXOS_MENU_SEARCH_CMD"):
+        menucommand  = command_var.split(" ")
+    else:
+        menucommand = ["wofi", "--show", "dmenu", "-W", "600", "-L", "20"]
 
     try:
         answer: list[str] = (
@@ -51,13 +55,13 @@ def show_menu_get_answer(choices: str) -> list[str]:
 def main() -> None:
     """main"""
     choices: str = "\n".join(
-        (
+        [
             "iss",
             "notif",
             "opt",
             "pkg",
             "pr",
-        )
+        ]
     )
 
     answer: list[str] = show_menu_get_answer(choices)
@@ -74,7 +78,10 @@ def main() -> None:
         case "iss" | "issue":
             url = "https://github.com/NixOS/nixpkgs/issues?q=is%3Aissue+$searchstr"
         case "notif" | "notifications":
-            notif_url = get_gh_notif_url(get_gh_notif_dict())
+            if os.getenv("GITHUB_TOKEN"):
+                notif_url = get_gh_notif_url(get_gh_notif_dict())
+            else:
+                show_menu_get_answer("set $GITHUB_TOKEN to view notifications")
 
     if url or notif_url:
         if url:

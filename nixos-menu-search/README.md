@@ -15,3 +15,6 @@ in with pkgs; [
   nixos-menu-search
 ]
 ```
+
+
+set `NIXOS_MENU_SEARCH_CMD` to change what command is used to display the menu, by default it is wofi
