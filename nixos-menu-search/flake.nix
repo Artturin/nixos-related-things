@@ -41,7 +41,7 @@
       in
       {
 
-        packages.${packageName} = pkgs.poetry2nix.mkPoetryApplication {
+        packages."${packageName}-poetry" = pkgs.poetry2nix.mkPoetryApplication {
           inherit python projectDir overrides;
           preBuild = ''
           '';
@@ -57,6 +57,22 @@
             #pytest -sv
           '';
         };
+        packages.${packageName} = python.pkgs.buildPythonApplication rec {
+          pname = packageName;
+          version = "0.1.0";
+          format = "pyproject";
+          nativeBuildInputs = with python.pkgs; [ poetry-core ];
+          propagatedBuildInputs = with python.pkgs; [ PyGithub icecream ];
+          src = ./.;
+          checkInputs = with pkgs; [ mypy ];
+          checkPhase = ''
+            export MYPYPATH=$PWD/src
+            mypy --strict src/nixos_menu_search
+            #mypy --strict tests
+            #pytest -sv
+          '';
+        };
+
 
         defaultPackage = self.packages.${system}.${packageName};
 
