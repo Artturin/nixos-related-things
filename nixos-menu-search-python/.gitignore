@@ -1,6 +1,6 @@
 # Nix
 result
-result=*
+result-*
 
 # Direnv
 .envrc
