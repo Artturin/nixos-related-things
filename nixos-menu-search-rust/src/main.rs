@@ -55,7 +55,7 @@ fn main() {
     }
 
     if !url.is_empty() {
-        url = url.replace("$searchstr", &answer.join("+").to_string());
+        url = url.replace("$searchstr", &answer.join("+"));
         open::that(url).expect("couldn't open link");
     }
 }
