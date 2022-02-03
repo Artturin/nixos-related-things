@@ -3,6 +3,13 @@ use std::{
     process::{exit, Command, Stdio},
 };
 
+fn open_octerm() {
+    Command::new("kitty")
+        .args(["--class", "floating-term", "octerm"])
+        .spawn()
+        .expect("fail");
+}
+
 fn show_menu_get_answer(choices: String) -> Vec<String> {
     let mut child = Command::new("wofi")
         .args(["--show", "dmenu"])
@@ -50,7 +57,7 @@ fn main() {
         "iss" | "issue" => {
             url = "https://github.com/NixOS/nixpkgs/issues?q=is%3Aissue+$searchstr".to_string();
         }
-        "notif" | "notifications" => {}
+        "notif" | "notifications" => open_octerm(),
         _ => exit(0),
     }
 
