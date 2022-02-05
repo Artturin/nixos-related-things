@@ -15,9 +15,13 @@
       flake = false;
     };
     utils.url = "github:numtide/flake-utils";
+    flake-compat = {
+      url = github:edolstra/flake-compat;
+      flake = false;
+    };
   };
 
-  outputs = { self, nixpkgs, utils, naersk, fenix, octerm }:
+  outputs = { self, nixpkgs, utils, naersk, fenix, octerm, flake-compat }:
     utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; overlays = [ fenix.overlay ]; };
