@@ -29,26 +29,26 @@
       in
       rec {
 
-        defaultPackage = (naersk.lib.${system}.override {
-          inherit (fenix.packages.${system}.minimal) cargo rustc;
-        }).buildPackage {
-          src = ./.;
-          #copyLibs = true;
-          nativeBuildInputs = with pkgs; [ makeWrapper ];
-          buildInputs = with pkgs; [ openssl pkgconfig ];
-          overrideMain = _: {
-            postInstall = ''
-              wrapProgram $out/bin/nixos-menu-search \
-                --prefix PATH : ${pkgs.lib.makeBinPath [ packages.octerm ]}
-            '';
-          };
-        };
-
         defaultApp = utils.lib.mkApp {
           drv = self.defaultPackage."${system}";
         };
 
         packages = utils.lib.flattenTree {
+          default = (naersk.lib.${system}.override {
+            inherit (fenix.packages.${system}.minimal) cargo rustc;
+          }).buildPackage {
+            src = ./.;
+            #copyLibs = true;
+            nativeBuildInputs = with pkgs; [ makeWrapper ];
+            buildInputs = with pkgs; [ openssl pkgconfig ];
+            overrideMain = _: {
+              postInstall = ''
+                wrapProgram $out/bin/nixos-menu-search \
+                  --prefix PATH : ${pkgs.lib.makeBinPath [ packages.octerm ]}
+              '';
+            };
+          };
+
           octerm = (naersk.lib.${system}.override {
             inherit (fenix.packages.${system}.minimal) cargo rustc;
           }).buildPackage {
