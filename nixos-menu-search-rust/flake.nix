@@ -6,10 +6,6 @@
       url = "github:nmattia/naersk/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    fenix = {
-      url = "github:nix-community/fenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     octerm = {
       url = "github:sudormrfbin/octerm";
       flake = false;
@@ -21,11 +17,10 @@
     };
   };
 
-  outputs = { self, nixpkgs, utils, naersk, fenix, octerm, flake-compat }:
+  outputs = { self, nixpkgs, utils, naersk, octerm, flake-compat }:
     utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs { inherit system; overlays = [ fenix.overlay ]; };
-        naersk-lib = pkgs.callPackage naersk { };
+        pkgs = import nixpkgs { inherit system; };
       in
       rec {
 
@@ -34,9 +29,7 @@
         };
 
         packages = utils.lib.flattenTree {
-          default = (naersk.lib.${system}.override {
-            inherit (fenix.packages.${system}.minimal) cargo rustc;
-          }).buildPackage {
+          default = naersk.lib.${system}.buildPackage {
             src = ./.;
             #copyLibs = true;
             nativeBuildInputs = with pkgs; [ makeWrapper ];
@@ -49,9 +42,7 @@
             };
           };
 
-          octerm = (naersk.lib.${system}.override {
-            inherit (fenix.packages.${system}.minimal) cargo rustc;
-          }).buildPackage {
+          octerm = naersk.lib.${system}.buildPackage {
             src = octerm;
             #copyLibs = true;
             buildInputs = with pkgs; [ openssl pkgconfig ];
@@ -63,20 +54,12 @@
           buildInputs = with pkgs; [
             openssl
             pkgconfig
-            (fenix.packages.${system}.latest.withComponents [
-              "cargo"
-              "clippy"
-              "rust-src"
-              "rustc"
-              "rustfmt"
-            ])
             rust-analyzer-nightly
             packages.octerm
             lldb
 
           ];
-          #RUST_SRC_PATH = pkgs.rustPlatform.rustLibSrc;
-          RUST_SRC_PATH = "${fenix.packages.${system}.latest.rust-src}/bin/rust-lib/src";
+          RUST_SRC_PATH = pkgs.rustPlatform.rustLibSrc;
           shellHook = ''
             exec zsh
           '';
