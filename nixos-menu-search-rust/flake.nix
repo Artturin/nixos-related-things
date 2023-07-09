@@ -33,7 +33,7 @@
             src = ./.;
             #copyLibs = true;
             nativeBuildInputs = with pkgs; [ makeWrapper ];
-            buildInputs = with pkgs; [ openssl pkgconfig ];
+            buildInputs = with pkgs; [ openssl pkg-config ];
             overrideMain = _: {
               postInstall = ''
                 wrapProgram $out/bin/nixos-menu-search \
@@ -45,7 +45,7 @@
           octerm = naersk.lib.${system}.buildPackage {
             src = octerm;
             #copyLibs = true;
-            buildInputs = with pkgs; [ openssl pkgconfig ];
+            buildInputs = with pkgs; [ openssl pkg-config ];
           };
         };
 
@@ -53,7 +53,7 @@
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
             openssl
-            pkgconfig
+            pkg-config
             rust-analyzer-nightly
             packages.octerm
             lldb
