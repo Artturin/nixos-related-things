@@ -2,7 +2,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-menu-search = {
-      url = "path:./nixos-menu-search-rust";
+      url = "path:nixos-menu-search-rust";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
