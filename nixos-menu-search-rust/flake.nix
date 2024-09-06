@@ -17,8 +17,17 @@
     };
   };
 
-  outputs = { self, nixpkgs, utils, naersk, octerm, flake-compat }:
-    utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      utils,
+      naersk,
+      octerm,
+      flake-compat,
+    }:
+    utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = import nixpkgs { inherit system; };
       in
@@ -33,7 +42,10 @@
             src = ./.;
             #copyLibs = true;
             nativeBuildInputs = with pkgs; [ makeWrapper ];
-            buildInputs = with pkgs; [ openssl pkg-config ];
+            buildInputs = with pkgs; [
+              openssl
+              pkg-config
+            ];
             overrideMain = _: {
               postInstall = ''
                 wrapProgram $out/bin/nixos-menu-search \
@@ -45,10 +57,12 @@
           octerm = naersk.lib.${system}.buildPackage {
             src = octerm;
             #copyLibs = true;
-            buildInputs = with pkgs; [ openssl pkg-config ];
+            buildInputs = with pkgs; [
+              openssl
+              pkg-config
+            ];
           };
         };
-
 
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
@@ -65,6 +79,7 @@
           '';
         };
 
-      });
+      }
+    );
 
 }
