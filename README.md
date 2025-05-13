@@ -1,10 +1,5 @@
 # nixos-related-things
 
-made a hound instance for searching the same repos
-
-https://search.artturin.com
-
-
 scripts for nixos and nix
 
 doc-repos is for searching dotfile repositories
@@ -30,5 +25,3 @@ nixpkgs.overlays =
 and add `doc-repos` to your packages
 
 then run `doc-repos --clone` to clone the repos to `~/code/documentation-dotfiles`
-
-
